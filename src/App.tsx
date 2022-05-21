@@ -22,7 +22,13 @@ export const FaviconElement: React.FC<{ url: string }> = ({ url }) => {
   }, [url]);
 
   return (
-    <>{iconExists ? <img src={faviconUrl} onError={onError} /> : <img />}</>
+    <>
+      {iconExists ? (
+        <img loading="lazy" src={faviconUrl} onError={onError} />
+      ) : (
+        <img />
+      )}
+    </>
   );
 };
 
