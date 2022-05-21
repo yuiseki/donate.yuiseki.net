@@ -66,7 +66,7 @@ function App() {
         >
           <input
             type="button"
-            value="Shuffle"
+            value="ガチャを引く"
             style={{
               fontSize: "1em",
               lineHeight: "1",
