@@ -1,4 +1,30 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+export const FaviconElement: React.FC<{ url: string }> = ({ url }) => {
+  const [iconExists, setIconExists] = useState(true);
+  const faviconUrl = useMemo(() => {
+    try {
+      const urlObj = new URL(url);
+      const hostname = urlObj.hostname;
+      return "http://www.google.com/s2/favicons?domain=" + hostname;
+    } catch (error) {
+      setIconExists(false);
+    }
+  }, [url]);
+  console.log(faviconUrl);
+
+  const onError = useCallback(() => {
+    setIconExists(false);
+  }, []);
+
+  useEffect(() => {
+    setIconExists(true);
+  }, [url]);
+
+  return (
+    <>{iconExists ? <img src={faviconUrl} onError={onError} /> : <img />}</>
+  );
+};
 
 function App() {
   const [orgs, setOrgs] = useState<string[][] | undefined>(undefined);
@@ -93,12 +119,14 @@ function App() {
       >
         {orgs?.map((org) => {
           return (
-            <div>
-              <h3>
+            <div key={org[0]}>
+              <h3>{org[0]}</h3>
+              <h4>
+                <FaviconElement url={org[1]} />
                 <a target="_blank" href={org[1]}>
-                  {org[0]}
+                  {org[1]}
                 </a>
-              </h3>
+              </h4>
             </div>
           );
         })}
