@@ -32,6 +32,14 @@ export const FaviconElement: React.FC<{ url: string }> = ({ url }) => {
   );
 };
 
+function shuffleArray(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function App() {
   const [orgData, setOrgData] = useState<string[][] | undefined>(undefined);
 
@@ -57,14 +65,8 @@ function App() {
       return;
     }
     setOrgData(undefined);
-    const shuffledOrgNames = [
-      ...new Set(
-        orgData.sort(() => {
-          return Math.random() - 0.5;
-        })
-      ),
-    ].reverse();
-    setOrgData(shuffledOrgNames);
+    const shuffledOrgData = shuffleArray(orgData).reverse();
+    setOrgData([...shuffledOrgData]);
   };
 
   if (!orgData) {
