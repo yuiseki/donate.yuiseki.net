@@ -33,7 +33,7 @@ export const FaviconElement: React.FC<{ url: string }> = ({ url }) => {
 };
 
 function App() {
-  const [orgs, setOrgs] = useState<string[][] | undefined>(undefined);
+  const [orgData, setOrgData] = useState<string[][] | undefined>(undefined);
 
   useEffect(() => {
     (async () => {
@@ -46,25 +46,28 @@ function App() {
         })
         .sort(() => {
           return Math.random() - 0.5;
-        });
-      setOrgs(newOrgs);
+        })
+        .reverse();
+      setOrgData(newOrgs);
     })();
   }, []);
 
   const shuffle = () => {
-    if (!orgs) {
+    if (!orgData) {
       return;
     }
-    setOrgs(undefined);
-    const shuffledOrgs = [
-      ...orgs.sort(() => {
-        return Math.random() - 0.5;
-      }),
-    ];
-    setOrgs(shuffledOrgs);
+    setOrgData(undefined);
+    const shuffledOrgNames = [
+      ...new Set(
+        orgData.sort(() => {
+          return Math.random() - 0.5;
+        })
+      ),
+    ].reverse();
+    setOrgData(shuffledOrgNames);
   };
 
-  if (!orgs) {
+  if (!orgData) {
     return <div>Loading...</div>;
   }
 
@@ -123,7 +126,7 @@ function App() {
           rowGap: "30px",
         }}
       >
-        {orgs?.map((org) => {
+        {orgData?.map((org) => {
           return (
             <div key={org[0]}>
               <h3>{org[0]}</h3>
